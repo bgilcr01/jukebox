@@ -13,7 +13,9 @@ class JukeboxApp(ctk.CTk):
         
         # Configure window for a standard 7" Pi Touchscreen (800x480)
         self.title("Kids Jukebox")
-        self.geometry("800x480")
+        # To lock the jukebox into a flawless, borderless kiosk mode on any display size:
+        self.attributes('-fullscreen', True)    
+        # self.geometry("800x480")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         
