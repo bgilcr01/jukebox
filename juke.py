@@ -11,11 +11,27 @@ class JukeboxApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         
+        # Pressing the Escape key will safely close the app
+        self.bind("<Escape>", lambda event: self.destroy())
+        
+        # get monitor dimensions ; needed for raspberry pi desktop; may have to adjust for touchscreen 
+
+        # 1. Remove the standard title bar, close buttons, and window borders
+        self.overrideredirect(True)
+        
+        # 2. Query the monitor's exact hardware dimensions
+        screen_w = self.winfo_screenwidth()
+        screen_h = self.winfo_screenheight()
+
+        # 3. Force the window to fit the screen exactly at top-left coordinates (0,0)
+        self.geometry(f"{screen_w}x{screen_h}+0+0")
+        
+        # TRY ENABLE THIS ON TOUCHSCREEN LATER
+        # self.attributes('-fullscreen', True)    
+        # self.geometry("800x480")
+        
         # Configure window for a standard 7" Pi Touchscreen (800x480)
         self.title("Kids Jukebox")
-        # To lock the jukebox into a flawless, borderless kiosk mode on any display size:
-        self.attributes('-fullscreen', True)    
-        # self.geometry("800x480")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         
@@ -32,6 +48,8 @@ class JukeboxApp(ctk.CTk):
         
         self.build_song_picker()
         self.build_controls()
+        
+        
         
     def load_mp3s(self):
         """Scans the music directory for local MP3 files."""
