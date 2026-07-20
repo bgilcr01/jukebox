@@ -10,26 +10,20 @@ pygame.mixer.init()
 class JukeboxApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-        
-        # 1. Force Openbox to treat the window as a solid background canvas
-        self.wait_visibility_before_deiconify()
-        self.attributes('-alpha', 1.0)
-        
-        # 2. Tell Tkinter to explicitly draw the frame before starting loops
-        self.update_idletasks()
-        
+              
         # Configure window size & force borderless fullscreen for Pi displays
         self.title("Kids Jukebox")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         
+        self.overrideredirect(True)
+                
         # 3. Force Tkinter to calculate full screen size natively
-        self.attributes('-fullscreen', True)
+        # self.attributes('-fullscreen', True)
         
-        #self.overrideredirect(True)
-        #screen_w = self.winfo_screenwidth()
-        #screen_h = self.winfo_screenheight()
-        #self.geometry(f"{screen_w}x{screen_h}+0+0")
+        screen_w = self.winfo_screenwidth()
+        screen_h = self.winfo_screenheight()
+        self.geometry(f"{screen_w}x{screen_h}+0+0")
         
         # Safe exit button for development testing (Press ESC to close app)
         self.bind("<Escape>", lambda event: self.destroy())
