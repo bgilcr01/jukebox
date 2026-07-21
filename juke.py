@@ -34,8 +34,12 @@ class JukeboxApp(ctk.CTk):
         self.bind("<Escape>", lambda event: self.destroy())
         
         # Directory Management State
-        self.base_dir = os.path.abspath("./music")
+        SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+        self.base_dir = os.path.join(SCRIPT_DIR, "music")
         self.current_dir = self.base_dir
+        
+        #self.base_dir = os.path.abspath("./music")
+        #self.current_dir = self.base_dir
         
         if not os.path.exists(self.base_dir):
             os.makedirs(self.base_dir)
@@ -177,6 +181,8 @@ class JukeboxApp(ctk.CTk):
     # 3. INTERACTIVE LOGIC PIPELINES
     def change_dir(self, target_directory):
         """Enters a subfolder and redraws the display."""
+        print("Attempting to open:", target_directory)
+        print("Does path exist?", os.path.exists(target_directory))
         self.current_dir = target_directory
         self.refresh_grid()
 
