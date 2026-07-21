@@ -19,11 +19,11 @@ class JukeboxApp(ctk.CTk):
         self.overrideredirect(True)
                 
         # 3. Force Tkinter to calculate full screen size natively
-        # self.attributes('-fullscreen', True)
+        self.attributes('-fullscreen', True)
         
-        screen_w = self.winfo_screenwidth()
-        screen_h = self.winfo_screenheight()
-        self.geometry(f"{screen_w}x{screen_h}+0+0")
+        #screen_w = self.winfo_screenwidth()
+        #screen_h = self.winfo_screenheight()
+        #self.geometry(f"{screen_w}x{screen_h}+0+0")
         
         # Safe exit button for development testing (Press ESC to close app)
         self.bind("<Escape>", lambda event: self.destroy())
