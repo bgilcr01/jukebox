@@ -1,5 +1,6 @@
 import os
 import glob
+import time
 import tkinter as tk
 import customtkinter as ctk
 import pygame
@@ -10,19 +11,24 @@ pygame.mixer.init()
 class JukeboxApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-              
+        self.config(cursor="none")
+        
+       # Track when the last button tap occurred (in seconds)
+        self.last_tap_time = 0
+        
+        # Minimum time (in seconds) required between valid taps
+        # 0.5 seconds works great for kid-facing touchscreens
+        self.debounce_interval = 0.5 
+        
         # Configure window size & force borderless fullscreen for Pi displays
         self.title("Kids Jukebox")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         
         self.overrideredirect(True)
-                
-        # 3. Force Tkinter to calculate full screen size natively
-        self.attributes('-fullscreen', True)
-        #screen_w = self.winfo_screenwidth()
-        #screen_h = self.winfo_screenheight()
-        #self.geometry(f"{screen_w}x{screen_h}+0+0")
+        screen_w = self.winfo_screenwidth()
+        screen_h = self.winfo_screenheight()
+        self.geometry(f"{screen_w}x{screen_h}+0+0")
         
         # Safe exit button for development testing (Press ESC to close app)
         self.bind("<Escape>", lambda event: self.destroy())
@@ -180,6 +186,16 @@ class JukeboxApp(ctk.CTk):
         self.refresh_grid()
 
     def play_song(self, index):
+        current_time = time.time()
+        
+        # Check if the time since the last tap is LESS than our threshold
+        if (current_time - self.last_tap_time) < self.debounce_interval:
+            print("Ignored rapidly spammed tap!")
+            return  # Exit early, ignoring the tap
+        
+        # Update the last tap time
+        self.last_tap_time = current_time  
+
         if not self.playlist: return
         self.current_index = index
         track = self.playlist[self.current_index]
